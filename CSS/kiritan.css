@@ -1,0 +1,49 @@
+/*ニコルボタン拡大*/
+.fa.fa-fw.fa-nicoru--status {
+  width: 32px;
+  height: 24px;
+}
+
+/* ユーザ絵文字拡大  */
+.profile-emoji.status-link .emojione{
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s cubic-bezier(0,.49,.1,1.43) !important;
+}
+
+.detailed-status .profile-emoji.status-link .emojione {
+    width: 28px;
+    height: 28px;
+}
+
+.profile-emoji.status-link .emojione:hover{
+    width: 32px;
+    height: 32px;
+}
+
+.status__content {
+  text-shadow: 4px 4px 3px #000033;
+}
+
+/*　ｃｗ解除　　*/
+.status__content__spoiler-link {
+    display: none;
+}
+
+.status__content__text {
+    display: block !important;
+    border-top: 1px #557 solid;
+    margin-top: 1em;
+}
+
+/* 長文は隠す */
+.status.status-public .status__content {
+  max-height : 5em;    /*  隠す高さはお好みで  */
+  overflow: hidden;
+  transition: all 0.3s ease-out 0.3s; /* 最初の0.3sは変化時間 最後の0.3sは遅延時間 お好みで */
+}
+
+.status.status-public .status__content:hover {   /*:focus クリックしたら開く   :hover カーソルオンで開く  お好みで   */
+  max-height : 30em;  /* 最大値 単位が同じじゃないとだめっぽい */
+}
+
