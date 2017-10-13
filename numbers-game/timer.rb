@@ -212,22 +212,28 @@ handler do |job|
           #2回目以降のゲーム情報の設定（期変わりの初回はゲームファイル作成済み）
           if  h_game["game_number"] >= 1
 
+            #ゲームモード設定！
+            max_score = 0
+            #合計スコアファイルを読み込むー！
+            h_t_score = open(JSON_PATH  + TSCORE_FILE_PATH) do |io|
+              JSON.load(io)
+            end
+
+            h_t_score.each{|key,value|
+              max_score = value if max_score < value
+            }
+
             if h_game["game_mode"] != "NKYS"     #なかよしタイムは継続！
-                #ゲームモード設定！
-                max_score = 0
-                #合計スコアファイルを読み込むー！
-                h_t_score = open(JSON_PATH  + TSCORE_FILE_PATH) do |io|
-                  JSON.load(io)
-                end
-
-                h_t_score.each{|key,value|
-                  max_score = value if max_score < value
-                }
-
-                if  max_score >= 80
-                  h_game["game_mode"] = "HIGH"  #80点以上の人がいたら！
+                if  max_score >= 70
+                  h_game["game_mode"] = "HIGH"  #70点以上の人がいたら！
                 else
-                  h_game["game_mode"] = "NORM"  #80点以上の人がいなくなったら！
+                  h_game["game_mode"] = "NORM"  #70点以上の人がいなくなったら！
+                end
+            else
+                if  max_score >= 70
+                  h_game["game_mode"] = "NKHI"  #70点以上の人がいたら！
+                else
+                  h_game["game_mode"] = "NKYS"  #70点以上の人がいなくなったら！
                 end
             end
 
@@ -242,7 +248,7 @@ handler do |job|
               h_game["max"] = (h_vote.size + 1) / 2 + 5
 
               #フィーバータイムは範囲拡大
-              if h_game["game_mode"] == "HIGH"
+              if h_game["game_mode"] == "HIGH"  || h_game["game_mode"] == "NKHI"
                 h_game["min"] += FEVER_VAL
                 h_game["max"] += FEVER_VAL + 5
               end
@@ -269,6 +275,7 @@ handler do |job|
     fever_txt = ""
     fever_txt = "💫FEVER💫" if h_game["game_mode"] == "HIGH"
     fever_txt = "💚仲良し💚" if h_game["game_mode"] == "NKYS"  #なかよしタイム追加
+    fever_txt = "💖仲良しFEV💖" if h_game["game_mode"] == "NKHI"  #なかよしフィーバータイム追加
 
   #ゲーム開始トゥート！
     exe_toot("・#{h_game["min"]}～#{h_game["max"]}"+GAME_MESSAGE+"\n⚠️制限時間は約#{ENV["GAME_TIMER"]}分だよー！",nil,"【第#{h_game["game_season"]}期】第#{h_game["game_number"]}回"+START_GAME_SPOILER+fever_txt)
@@ -276,7 +283,7 @@ handler do |job|
   #フィーバー説明トゥート！
 #    if  h_game["game_mode"] == "HIGH"
 #      sleep(3)
-#      exe_toot("説明しよう！！スコア80点以上の人がいるとフィーバータイムに突入だよー！\nフィーバータイムは以下の特徴があるよー！\n ・得点が大きくなるよー！\n ⚠投票が被るとその得点分減点！\n ・ハイリスク、ハイリターンだよー！",nil,"フィーバータイムだよー！")
+#      exe_toot("説明しよう！！スコア70点以上の人がいるとフィーバータイムに突入だよー！\nフィーバータイムは以下の特徴があるよー！\n ・得点が大きくなるよー！\n ⚠投票が被るとその得点分減点！\n ・ハイリスク、ハイリターンだよー！",nil,"フィーバータイムだよー！")
 #    end
 
   #なかよしタイム説明トゥート！
@@ -285,6 +292,11 @@ handler do |job|
 #      exe_toot("説明しよう！！なんとなくの気分でなかよしモードに突入だよー！\nなかよしタイムは以下の特徴があるよー！\n ・投票が被ってもみんなで得点を分け合うよー！\n ・端数は投票の早かった人（多分…）に分配されるよー",nil,"なかよしタイムだよー！")
 #    end
 
+  #フィーバー説明トゥート！
+    if  h_game["game_mode"] == "NKHI"
+      sleep(3)
+      exe_toot("説明しよう！！仲良しモードでスコア70点以上の人がいると仲良しフィーバータイムに突入だよー！\n仲良しフィーバーは以下の特徴があるよー！\n ・得点が大きくなるよー！\n ⚠投票が被るとその得点を分け合って減点！\n ・ハイリスク、ハイリターンだよー！",nil,"仲良しフィーバータイムだよー！")
+    end
 
     str = ENV["GAME_TIMER"]
     i   = str.to_i - 1
@@ -384,6 +396,26 @@ handler do |job|
 
           for i in 0..m_v-1 do
             h_t_score[value[i]] = h_t_score[value[i]].to_i + 1    #余り分を１ずつ分配
+          end
+
+        end
+
+        #なかよしフィーバータイムは分配して減算！
+        if  h_game["game_mode"] == "NKHI"
+
+          d_v = key.to_i.div(value.size)     #商
+          m_v = key.to_i.modulo(value.size)  #余り
+
+          if d_v > 0
+            for i in 0..value.size-1 do
+              h_t_score[value[i]] = h_t_score[value[i]].to_i - d_v  #全員に商分減算
+              h_t_score[value[i]] = 0  if h_t_score[value[i]] < 0
+            end
+          end
+
+          for i in 0..m_v-1 do
+            h_t_score[value[m_v-1-i]] = h_t_score[value[m_v-1-i]].to_i - 1    #余り分を１ずつ減算
+            h_t_score[value[m_v-1-i]] = 0   if  h_t_score[value[m_v-1-i]] < 0
           end
 
         end
@@ -495,11 +527,27 @@ handler do |job|
 end
 
 
-every(1.hour, 'main', at: '**:31')
+#every(1.hour, 'main', at: '**:31')
+#every(1.day, 'main', at: '22:51')
+#every(1.day, 'main', at: '23:11')
+#every(1.day, 'main', at: '23:51')
+#every(1.day, 'main', at: '00:11')
+#every(1.day, 'main', at: '21:01')
+#every(1.day, 'main', at: '22:01')
+#every(1.week, 'main')
+
+
+every(1.day, 'main', at: '00:31')
+every(1.day, 'main', at: '06:31')
+every(1.day, 'main', at: '08:31')
+every(1.day, 'main', at: '12:31')
+every(1.day, 'main', at: '15:01')
+every(1.day, 'main', at: '18:31')
+every(1.day, 'main', at: '19:31')
+every(1.day, 'main', at: '20:31')
+every(1.day, 'main', at: '21:31')
+every(1.day, 'main', at: '22:31')
 every(1.day, 'main', at: '22:51')
-every(1.day, 'main', at: '23:11')
+every(1.day, 'main', at: '23:31')
 every(1.day, 'main', at: '23:51')
-every(1.day, 'main', at: '00:11')
-every(1.day, 'main', at: '21:01')
-every(1.day, 'main', at: '22:01')
 #every(1.week, 'main')

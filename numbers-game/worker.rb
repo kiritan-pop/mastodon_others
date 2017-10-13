@@ -241,7 +241,7 @@ def get_result()
           h_chk[k.to_i] = "💚"
         when "NORM"
           h_chk[k.to_i] = "✖"
-        when "HIGH"
+        when "HIGH","NKHI"
           h_chk[k.to_i] = "💀"
       end
 
@@ -260,6 +260,18 @@ def get_result()
         else
           text += "#{h_chk[k]}#{sprintf("%2d",k)} :#{v} #{k.div(h_score[ k.to_s ].size)+1}～#{k.div(h_score[ k.to_s ].size)}点\n"
         end
+
+      when "NKHI"
+        if  h_score[ k.to_s ].size == 1
+          text += "#{h_chk[k]}#{sprintf("%2d",k)} :#{v} #{k}点\n"
+        else
+          if  k.modulo(h_score[ k.to_s ].size) == 0
+            text += "#{h_chk[k]}#{sprintf("%2d",k)} :#{v} -#{k.div(h_score[ k.to_s ].size)}点\n"
+          else
+            text += "#{h_chk[k]}#{sprintf("%2d",k)} :#{v} -#{k.div(h_score[ k.to_s ].size)}～-#{k.div(h_score[ k.to_s ].size)+1}点\n"
+          end
+        end
+
 
       when "NORM"
         if  h_score[ k.to_s ].size == 1
@@ -500,7 +512,8 @@ end
 def normalize(text)
 
   #全角文字は半角へ、大文字は小文字へ！
-  n_text = text.tr('０-９ａ-ｚＡ-Ｚ', '0-9a-zA-Z').downcase
+#  n_text = text.tr('０-９ａ-ｚＡ-Ｚ', '0-9a-zA-Z').downcase
+  n_text = text.tr('０-９ａ-ｚＡ-Ｚ', '0-9a-zA-Z')
 
   #余計なブランク類は削除
   n_text.gsub!(/[[:blank:]]/,"")
