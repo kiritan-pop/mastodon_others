@@ -223,7 +223,7 @@ handler do |job|
               max_score = value if max_score < value
             }
 
-            if h_game["game_mode"] != "NKYS"     #なかよしタイムは継続！
+            if h_game["game_mode"] != "NKYS"  && h_game["game_mode"] != "NKHI"   #なかよしタイムは継続！
                 if  max_score >= 70
                   h_game["game_mode"] = "HIGH"  #70点以上の人がいたら！
                 else
@@ -250,7 +250,7 @@ handler do |job|
               #フィーバータイムは範囲拡大
               if h_game["game_mode"] == "HIGH"  || h_game["game_mode"] == "NKHI"
                 h_game["min"] += FEVER_VAL
-                h_game["max"] += FEVER_VAL + 5
+                h_game["max"] += FEVER_VAL + 2
               end
 
             end
