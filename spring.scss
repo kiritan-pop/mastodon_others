@@ -1,0 +1,236 @@
+// Commonly used web colors
+$black: #000000;            // Black
+$white: #ffffff;            // White
+$success-green: #79bd9a;    // Padua
+$error-red: #df405a;        // Cerise
+$warning-red: #ff5050;      // Sunset Orange
+$gold-star: #ed4d1c;        // Dark Goldenrod
+
+// Values from the classic Mastodon UI
+$classic-base-color: #312a33;         // Midnight Express
+$classic-primary-color: #f2d2ee;      // Echo Blue
+$classic-secondary-color: #e2d5df;    // Pattens Blue
+$classic-highlight-color: #26ddf2;    // Summer Sky
+
+// Variables for defaults in UI
+$base-shadow-color: $black !default;
+$base-overlay-background: $black !default;
+$base-border-color: $white !default;
+$simple-background-color: $white !default;
+$primary-text-color: $white !default;
+$valid-value-color: $success-green !default;
+$error-value-color: $error-red !default;
+
+// Tell UI to use selected colors
+$ui-base-color: $classic-base-color !default;                  // Darkest
+$ui-base-lighter-color: lighten($ui-base-color, 26%) !default; // Lighter darkest
+$ui-primary-color: $classic-primary-color !default;            // Lighter
+$ui-secondary-color: $classic-secondary-color !default;        // Lightest
+$ui-highlight-color: $classic-highlight-color !default;        // Vibrant
+
+.fa-star:before {
+  font-size:large !important;
+  content: "\f1b0" !important;
+}
+
+/* wrap */
+.ui {
+  background: url('http://zunko.jp/sozai/zunkot_s/zzm_a1zunko85.png') !important;
+}
+
+/* box header */
+.column, .drawer {
+	flex: 1 1 50px  !important;
+}
+.empty-column-indicator{
+  background: rgba(30, 10, 0, .9) !important;}
+
+.drawer__header {
+  background: rgba(30, 10, 0, .9) !important;
+  border-top-left-radius: 15px 15px !important;
+  overflow: hidden !important; }
+
+.drawer__header a:hover {
+  background: rgba(30, 10, 0, .8) !important;
+  color: #fff !important; }
+
+.column-header {
+  background: rgba(30, 10, 0, .8) !important;
+  border-top-left-radius: 15px 15px !important;
+  color: #000 !important; }
+
+.column > .column-back-button {
+  border-radius: 15px 15px 0 0 !important; }
+
+.column-back-button,
+.column-header__button.active:hover,
+.column-header__button:hover {
+  background: rgba(30, 10, 0, .8) !important;
+  border-top-left-radius: 15px 15px !important;
+  color: #fff !important; }
+
+.column-header__button,
+.column-header__button.active {
+  background: none !important;
+  color: #aaa !important; }
+
+.column-header__back-button {
+  background: none !important;
+  border-radius: 0 !important;
+  color: #aaa !important; }
+
+.column-back-button--slim > .column-back-button {
+  border-top-left-radius: 15px 15px !important;
+}
+
+.column-back-button--slim-button {
+  padding-left: 10px !important; }
+
+/* tab */
+.tabs-bar {
+  background: rgba(30, 10, 0, .8) !important;
+  border-top-left-radius: 15px 15px !important;
+  border: none !important;
+  overflow: hidden !important; }
+
+.tabs-bar__link {
+  color: #000 !important;
+  border: none !important; }
+
+.tabs-bar__link.active,
+.tabs-bar__link:hover,
+.tabs-bar__link:focus,
+.tabs-bar__link:active {
+  background: rgba(30, 10, 0, .8) !important;
+  border: none !important;
+  color: #fff !important; }
+
+/* box inner */
+.drawer__inner {
+  background: rgba(30, 10, 0, .8) !important;
+  border-bottom-right-radius: 30px 30px !important; }
+
+
+.account {
+  border-color: #fff !important; }
+
+.navigation-bar strong {
+  color: #fff !important; }
+
+.navigation-bar__profile-edit {
+  color: #fff !important;
+  text-decoration: underline !important;
+  transition: all 100ms ease-in !important; }
+
+.navigation-bar__profile-edit,
+.status__display-name strong,
+.account__display-name strong {
+  transition: all 100ms ease-in !important; }
+
+.navigation-bar__profile-edit:hover,
+.status__display-name strong:hover,
+.account__display-name strong:hover {
+  color: #FD751D !important;
+  transition: all 100ms ease-in !important; }
+
+
+
+/* box scroll */
+.column > .scrollable {
+  background: rgba(30, 10, 0, .8) !important;
+  border-bottom-right-radius: 30px 30px !important;
+}
+
+
+/* toot option icon */
+.compose-form__buttons {
+  border-radius: 15px !important; }
+
+.compose-form__publish-button-wrapper > .button {
+  border-radius: 15px !important;
+}
+
+/* textarea */
+.spoiler-input__input {
+  border-radius: 30px !important; }
+
+.compose-form__modifiers {
+  background: none !important; }
+
+
+.autosuggest-textarea__textarea {
+  border-radius: 30px !important; }
+
+/* cassette */
+.status {
+  border-bottom-color: #C4C2C0 !important; }
+  .status.status-direct {
+    background: rgba(255, 255, 255, .1) !important; }
+
+/* more */
+.load-more {
+  color: #C4C2C0 !important;
+  transition: all 100ms ease-in !important; }
+  .load-more:hover {
+    background: rgba(255, 255, 255, .1) !important;
+    transition: all 100ms ease-in !important; }
+
+
+/* search */
+.search__input {
+  background: rgba(30, 10, 0, .9) !important;
+}
+.search__input:focus {
+  background: rgba(30, 10, 0, .9) !important;
+}
+
+/* reply */
+.reply-indicator {
+  background: rgba(255, 255, 255, .3) !important;
+  border-radius: 4px !important;
+  margin-bottom: 15px !important; }
+
+.reply-indicator__display-name,
+.reply-indicator__content {
+  color: #fff !important; }
+
+.reply-indicator__display-avatar > .account__avatar {
+  box-shadow: none !important; }
+
+/* culumn */
+.column-header.active .fa {
+  color: #000 !important; }
+
+.getting-started,.getting-started__wrapper {
+  background: rgba(30, 10, 0, .8) !important;
+  border-bottom-right-radius: 30px 30px !important;
+}
+
+.column-link {
+  background: rgba(30, 10, 0, .1) !important; }
+  .column-link:hover {
+    background: rgba(30, 10, 0, .4) !important; }
+
+.columns-area > div .column-header ,.column-subheading {
+  background:rgba(30, 10, 0, .9) !important;
+  color: #fff !important;
+}
+
+
+/* scrollbar */
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 125, 64, .4) !important; }
+
+::-webkit-scrollbar:active {
+  background: transparent !important; }
+::-webkit-scrollbar:active:hover {
+  background: transparent !important; }
+
+/* detail */
+.detailed-status,
+.detailed-status__action-bar {
+ background:rgba(0, 0, 0, .1) !important;
+}
+
+@import 'application';

@@ -1,0 +1,2 @@
+default: styles/spring.scss
+origin: styles/application.scss
